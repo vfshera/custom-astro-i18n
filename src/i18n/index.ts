@@ -1,3 +1,4 @@
+// Translations
 export const languages = {
   en: "English",
   fr: "Français",
@@ -5,6 +6,7 @@ export const languages = {
 
 type Languages = keyof typeof languages;
 
+// Default Language
 export const defaultLang: Languages = "en";
 
 export const translations = {
