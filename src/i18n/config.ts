@@ -1,30 +1,48 @@
-// SUPPORTED LANGUAGES
+/**
+ * Supported languages object.
+ */
 export const languages = {
   en: "English",
   fr: "Français",
 };
 
-// DEFAULT LANGUAGE
+/**
+ * Default language.
+ */
 export const defaultLang: Languages = "en";
 
-// TRANSLATIONS
+/**
+ * Translations object containing translations for different languages.
+ */
 export const translations = {
   en: {
-    "nav.home": "Home",
-    "nav.about": "About",
-    "nav.twitter": "Twitter",
+    nav: { home: "Home", about: "About", twitter: "Twitter" },
+    footer: { title: "Footer" },
   },
   fr: {
-    "nav.home": "Accueil",
-    "nav.about": "À propos",
+    nav: { home: "Accueil", about: "À propos" },
+    job: {
+      desc: "This is a dev",
+    },
+    terms: {
+      join: "Welcome to translations",
+    },
   },
 } as const;
 
-// -------------------------------------------------------------------------------------------------------------------------
-
 /**
- * TYPES
+ * Types
  */
-
 export type Languages = keyof typeof languages;
 export type Translation = typeof translations;
+
+export type NonEmptyPath<T, P = ""> = {
+  [K in keyof T]: T[K] extends object
+    ? NonEmptyPath<T[K], `${P}${K}.`>
+    : `${P}${K}`;
+}[keyof T];
+
+export type TPath =
+  NonEmptyPath<Translation> extends `${infer Lang}.${infer Rest}`
+    ? Rest
+    : never;
