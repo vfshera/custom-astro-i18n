@@ -1,54 +1,192 @@
-# Astro Starter Kit: Basics
+# Custom i18n For Astro
+
+This project shows how to implement internationalization in Astro.
+
+## Key areas of the project
+
+1. `src/i18n` - where all the logic resides
+2. `src/index.astro` - is the entry point which redirects to the defaultLang when `/` route is hit.
+3. `src/[lang]/index.astro` - All routes should be in the `[lang]` folder so that we can catch the intended locale ie. `/en/about` etc
+
+---
+
+## Usage
+
+1. Create/copy the `src/i18n` folder to your `src` directory
+2. (Optional) Add alias to `tsconfig.json` for easier imports
+
+   ```json
+   {
+     "extends": "astro/tsconfigs/strict",
+
+     "compilerOptions": {
+       "baseUrl": ".",
+       "paths": {
+         "@/*": ["src/*"]
+       }
+     }
+   }
+   ```
+
+3. Create `src/pages/index.astro` with the following
+
+   ```
+   ---
+   import { getLangFromUrl } from "@/i18n";
+
+   const lang = getLangFromUrl(Astro.url);
+
+   return Astro.redirect(`/${lang}/`);
+   ---
+
+   ```
+
+4. Create a folder `src/[lang]`.All your routes should reside here so that we can match `[lang]` to our languages.
+
+   You can now use translations on your pages as below
+
+   ```
+   ---
+    import { getLangFromUrl, useTranslations } from "@/i18n";
+    import Layout from "@/layouts/Layout.astro";
+
+    const lang = getLangFromUrl(Astro.url);
+    const t = useTranslations(lang);
+    ---
+
+    <Layout title="About">
+        <h1>{t("nav.about")}</h1>
+    </Layout>
+
+   ```
+
+<br />
+
+## The i18n Folder
+
+This folder contains the following files:
 
 ```
-npm create astro@latest -- --template basics
+📦i18n
+ ┣ 📜LanguagePicker.astro
+ ┣ 📜config.ts
+ ┣ 📜index.ts
+ ┗ 📜utils.ts
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+<br />
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### 🌟 `LanguagePicker.astro`
 
-![basics](https://user-images.githubusercontent.com/4677417/186188965-73453154-fdec-4d6b-9c34-cb35c248ae5b.png)
+It displays a language switcher.
 
-## 🚀 Project Structure
+You can style it and add custom functionality
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```jsx
+<select name="language" id="i18n-language-picker">
+  {Object.entries(languages).map(([lang, label]) => (
+    <option value={lang}>{label}</option>
+  ))}
+</select>
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+<br />
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### 🌟 `config.ts`
 
-Any static assets, like images, can be placed in the `public/` directory.
+This file defines the configuration for supported languages, default language, and translations.
 
-## 🧞 Commands
+```ts
+/**
+ * Add Supported languages to this object.
+ */
+export const languages = {
+  en: "English",
+  fr: "Français",
+};
 
-All commands are run from the root of the project, from a terminal:
+/**
+ * Set default language.
+ *
+ * NOTE: its type is of the languages object
+ */
+export const defaultLang: Languages = "en";
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:3000`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+/**
+ * Translations object containing translations for different languages.
+ *
+ * NOTE: it should have keys  matching the languages object keys
+ * then the actual translations in {key : value} pairs.
+ * values can be strings or objects with keys
+ */
+export const translations = {
+  en: {
+    nav: { home: "Home", about: "About" },
+    footer: { title: "The Footer title" },
+  },
+  fr: {
+    nav: { home: "Accueil", about: "À propos" },
+  },
+} as const;
+```
 
-## 👀 Want to learn more?
+<br />
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### 🌟 `utils.ts`
+
+This file contains utility functions used for language detection and translation.
+
+```ts
+/**
+ * Retrieves the language code from the URL path ie. Astro.url
+ */
+export function getLangFromUrl(url: URL) {
+  const [, lang] = url.pathname.split("/");
+  if (lang in translations) return lang as Languages;
+  return defaultLang;
+}
+
+/**
+ * Returns the translation value for a given translation key using the default language.
+ * You can customize the fallback mechanism here
+ */
+function translationFallback(keys: string[], defaultFallbackKeys: string) {
+  let value: any = translations;
+
+  for (let key of [defaultLang, ...keys]) {
+    if (value && typeof value === "object" && key in value) {
+      value = value[key as keyof typeof value];
+    } else {
+      value = `__${defaultFallbackKeys}__`;
+    }
+  }
+
+  return value as string;
+}
+
+/**
+ * Returns a translation function for the specified language.
+ */
+export function useTranslations(lang: Languages) {
+  /**
+   * Translates the given translation key.
+   * If the translation key is found, it returns the corresponding translation.
+   * If the translation key is not found, it falls back to the default language translation.
+   * If neither the translation key nor the default language translation is found, it returns a placeholder `__${defaultFallbackKeys}__`.
+   */
+  return function t(translationKey: TPath) {
+    const keys = translationKey.split(".");
+    let value: any = translations;
+
+    for (let key of [lang, ...keys]) {
+      if (value && typeof value === "object" && key in value) {
+        value = value[key as keyof typeof value];
+      } else {
+        value = translationFallback(keys, `${lang}.${translationKey}`);
+      }
+    }
+
+    return value as string;
+  };
+}
+```
