@@ -1,7 +1,7 @@
 import { translations, type Languages, defaultLang, TPath } from "./config";
 
 /**
- * Retrieves the language code from the URL path.
+ * Retrieves the language code from the URL path ie. Astro.url
  */
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split("/");
@@ -32,6 +32,9 @@ function translationFallback(keys: string[], defaultFallbackKeys: string) {
 export function useTranslations(lang: Languages) {
   /**
    * Translates the given translation key.
+   * If the translation key is found, it returns the corresponding translation.
+   * If the translation key is not found, it falls back to the default language translation.
+   * If neither the translation key nor the default language translation is found, it returns a placeholder.
    */
   return function t(translationKey: TPath) {
     const keys = translationKey.split(".");
