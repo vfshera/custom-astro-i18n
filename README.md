@@ -68,10 +68,10 @@ This folder contains the following files:
 
 ```
 📦i18n
- ┣ 📜LanguagePicker.astro
- ┣ 📜config.ts
- ┣ 📜index.ts
- ┗ 📜utils.ts
+┣ 📜LanguagePicker.astro
+┣ 📜config.ts
+┣ 📜index.ts
+┗ 📜utils.ts
 ```
 
 <br />
