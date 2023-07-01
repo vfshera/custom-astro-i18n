@@ -1,10 +1,2 @@
-import { getLangFromUrl, useTranslations } from "./utils";
-import { defaultLang, languages, translations } from "./config";
-
-export {
-  getLangFromUrl,
-  useTranslations,
-  defaultLang,
-  languages,
-  translations,
-};
+export { getLangFromUrl, useTranslations } from "./utils";
+export { defaultLang, languages, translations } from "./config";
