@@ -1,15 +1,17 @@
 ---
+import { getLangFromUrl, useTrans } from "@/i18n";
 import Layout from "@/layouts/Layout.astro";
+
+const lang = getLangFromUrl(Astro.url);
+
+const t = await useTrans(lang);
 ---
 
 <Layout title="Welcome to Astro.">
 	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
+		<h1>{t.welcome.header}</h1>
 		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br
-			/>
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message
-			above.
+			{t.welcome.subhead}
 		</p>
 	</main>
 </Layout>

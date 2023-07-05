@@ -1,4 +1,10 @@
-import { translations, type Languages, defaultLang, TPath } from "./config";
+import {
+  translations,
+  type Languages,
+  defaultLang,
+  TPath,
+  trans,
+} from "./config";
 
 /**
  * Retrieves the language code from the URL path ie. Astro.url
@@ -51,3 +57,6 @@ export function useTranslations(lang: Languages) {
     return value as string;
   };
 }
+
+// loads json translations
+export const useTrans = async (lang: Languages) => trans[lang]();

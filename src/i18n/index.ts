@@ -1,2 +1,2 @@
-export { getLangFromUrl, useTranslations } from "./utils";
-export { defaultLang, languages, translations } from "./config";
+export * from "./utils";
+export * from "./config";

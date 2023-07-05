@@ -31,6 +31,14 @@ export const translations = {
 } as const;
 
 /**
+ * Loass json translations
+ */
+export const trans = {
+  en: () => import("./trans/en.json").then((module) => module.default),
+  fr: () => import("./trans/fr.json").then((module) => module.default),
+} as const;
+
+/**
  * Types
  */
 export type Languages = keyof typeof languages;
