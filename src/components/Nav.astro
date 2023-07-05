@@ -1,26 +1,21 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n";
+import { getLangFromUrl, useTranslation } from "@/i18n";
 import LanguagePicker from "@/i18n/LanguagePicker.astro";
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslation(lang);
 ---
 
 <nav>
 	<ul>
 		<li>
 			<a href={`/${lang}/home/`}>
-				{t("nav.home")}
+				{t.nav.home}
 			</a>
 		</li>
 		<li>
 			<a href={`/${lang}/about/`}>
-				{t("nav.about")}
-			</a>
-		</li>
-		<li>
-			<a href="https://twitter.com/astrodotbuild">
-				{t("nav.twitter")}
+				{t.nav.about}
 			</a>
 		</li>
 	</ul>
