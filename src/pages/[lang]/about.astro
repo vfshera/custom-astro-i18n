@@ -1,11 +1,11 @@
 ---
-import { getLangFromUrl, useTranslations } from "@/i18n";
+import { getLangFromUrl, useTranslation } from "@/i18n";
 import Layout from "@/layouts/Layout.astro";
 
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = await useTranslation(lang);
 ---
 
 <Layout title="About">
-    <h1>{t("nav.about")}</h1>
+  <h1>{t.nav.about}</h1>
 </Layout>
