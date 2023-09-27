@@ -1,6 +1,6 @@
 ---
-import { getLangFromUrl, useTranslation } from "~/i18n";
-import LanguagePicker from "~/i18n/LanguagePicker.astro";
+import { getLangFromUrl, useTranslation } from "@/i18n";
+import LanguagePicker from "@/i18n/LanguagePicker.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = await useTranslation(lang);
