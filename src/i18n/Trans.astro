@@ -1,0 +1,16 @@
+---
+/**
+ * use this for translations containing basic "strong", "br", "em", "i", "b" html tags
+ *
+ * for complex translation with span tags or other tags with attributes use Interpolate component
+ */
+
+import { sanitizeTranslations } from "./utils";
+interface Props {
+  translation: string;
+}
+
+const { translation } = Astro.props;
+---
+
+<Fragment set:html={sanitizeTranslations(translation)} />
