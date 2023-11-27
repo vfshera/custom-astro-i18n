@@ -1,7 +1,7 @@
 /**
  * Supported languages object.
  */
-export const languages = {
+export const locales = {
   en: "English",
   fr: "Français",
 };
@@ -9,7 +9,7 @@ export const languages = {
 /**
  * Default language.
  */
-export const defaultLang: Languages = "en";
+export const defaultLang: Locale = "en";
 
 /**
  * Translations object containing translations for different languages.
@@ -22,5 +22,5 @@ export const translations = {
 /**
  * Types
  */
-export type Languages = keyof typeof languages;
+export type Locale = keyof typeof locales;
 export type Translation = typeof translations;
