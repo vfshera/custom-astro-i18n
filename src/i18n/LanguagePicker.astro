@@ -1,26 +1,26 @@
 ---
-import { getLangFromUrl, languages } from ".";
+import { getLangFromUrl, locales } from ".";
 const currentLang = getLangFromUrl(Astro.url);
 ---
 
 <select name="language" id="i18n-language-picker">
-    {
-        Object.entries(languages).map(([lang, label]) => (
-            <option value={lang}>{label}</option>
-        ))
-    }
+  {
+    Object.entries(locales).map(([lang, label]) => (
+      <option value={lang}>{label}</option>
+    ))
+  }
 </select>
 
 <script define:vars={{ currentLang }}>
-const i18nPicker = document.querySelector("#i18n-language-picker");
+  const i18nPicker = document.querySelector("#i18n-language-picker");
 
-const path = window.location.pathname;
+  const path = window.location.pathname;
 
-i18nPicker.value = currentLang;
+  i18nPicker.value = currentLang;
 
-i18nPicker.onchange = (e) => {
+  i18nPicker.onchange = (e) => {
     const selectedLang = e.target.value;
     const newPath = path.replace(/^\/\w{2}\b/, `/${selectedLang}`);
     window.location.pathname = newPath;
-};
+  };
 </script>

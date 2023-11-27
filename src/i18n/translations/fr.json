@@ -1,7 +1,8 @@
 {
   "welcome": {
     "header": "Bienvenue chez Astro.",
-    "subhead": "Pour commencer, ouvrez le répertoire src/pages dans votre projet.Défi de code : Modifiez le message \"Bienvenue chez Astro\" ci-dessus."
+    "subhead": "Pour commencer, ouvrez le répertoire src/pages dans votre projet.Défi de code : Modifiez le message \"Bienvenue chez Astro\" ci-dessus.",
+    "text_with_tags": "Salut, <br /> Bienvenue à la maison !"
   },
   "nav": {
     "home": "Accueil",
