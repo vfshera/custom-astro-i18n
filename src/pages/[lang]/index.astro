@@ -14,7 +14,19 @@ const t = await useTranslation(lang);
     <p class="instructions">
       {t.welcome.subhead}
     </p>
-    <p><Trans translation={t.welcome.text_with_tags} /></p>
+    <p>
+      <Trans translation={t.welcome.text_with_tags}>
+        Hi, <br /> Welcome Home!
+      </Trans>
+    </p>
+
+    <p>
+      <Trans translation={t.welcome.interpolate}>
+        How <strong style="color: red;">Great is this</strong> text in the line <a
+          href="#">Find out</a
+        >
+      </Trans>
+    </p>
   </main>
 </Layout>
 

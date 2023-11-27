@@ -47,3 +47,66 @@ export function sanitizeTranslations(input: string): string {
     }
   });
 }
+
+/**
+ * Interpolates a localized string with HTML tags using a reference string.
+ * @param localizedString - The string to be interpolated.
+ * @param referenceString - The reference string containing HTML tags.
+ * @returns The interpolated string with replaced HTML tags.
+ */
+export const interpolate = (
+  localizedString: string,
+  referenceString: string
+): string => {
+  // Regular expression to match HTML tags
+  const tagsRegex = /<([\w\d]+)([^>]*)>/gi;
+
+  // Extract HTML tags from the reference string
+  const referenceStringMatches = referenceString.match(tagsRegex);
+
+  // Check if reference string has HTML tags for interpolation
+  if (!referenceStringMatches) {
+    console.warn(
+      "WARNING(i18n): The default slot does not include any HTML tag to interpolate! Use the `t` function directly."
+    );
+    return localizedString;
+  }
+
+  // Extracted information about reference tags
+  const referenceTags: { name: string; attributes: string }[] = [];
+  referenceStringMatches.forEach((tagNode) => {
+    const [, name, attributes] = tagsRegex.exec(tagNode) || [];
+    referenceTags.push({ name, attributes });
+
+    // Reset regex state
+    tagsRegex.lastIndex = 0;
+  });
+
+  // Perform tag replacement in the localized string
+  let interpolatedString = localizedString;
+  for (let index = 0; index < referenceTags.length; index++) {
+    const referencedTag = referenceTags[index];
+
+    // Replace opening and self-closing tags
+    interpolatedString = interpolatedString.replace(
+      new RegExp(`<${index}(\\/?)>`, "g"),
+      (_, isSelfClosing) => {
+        if (isSelfClosing) {
+          // Handle self-closing tags
+          return `<${referencedTag.name}${referencedTag.attributes} />`;
+        } else {
+          // Handle opening tags
+          return `<${referencedTag.name}${referencedTag.attributes}>`;
+        }
+      }
+    );
+
+    // Replace closing tags
+    interpolatedString = interpolatedString.replace(
+      new RegExp(`</${index}>`, "g"),
+      `</${referencedTag.name}>`
+    );
+  }
+
+  return interpolatedString;
+};

@@ -2,7 +2,8 @@
   "welcome": {
     "header": "Welcome to Astro",
     "subhead": "To get started, open the directory src/pages in your project.Code Challenge: Tweak the \"Welcome to Astro\" message above.",
-    "text_with_tags": "Hi, <br /> Welcome Home!"
+    "text_with_tags": "Hi, <0/> Welcome Home!",
+    "interpolate": " How <0>Great is this</0> text in  the line <1>Find out</1>"
   },
   "nav": {
     "home": "Home",

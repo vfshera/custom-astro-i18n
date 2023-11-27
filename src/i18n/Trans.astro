@@ -1,16 +1,21 @@
 ---
 /**
- * use this for translations containing basic "strong", "br", "em", "i", "b" html tags
+ * use <Trans /> (self closing) for translations containing basic "strong", "br", "em", "i", "b" html tags
  *
- * for complex translation with span tags or other tags with attributes use Interpolate component
+ * for complex translation with span tags or other tags with attributes use like this <Trans>Hi,<span style="color: red;">User</span></Trans>
  */
 
-import { sanitizeTranslations } from "./utils";
+import { interpolate, sanitizeTranslations } from "./utils";
 interface Props {
   translation: string;
 }
 
 const { translation } = Astro.props;
+const referenceString = await Astro.slots.render("default");
 ---
 
-<Fragment set:html={sanitizeTranslations(translation)} />
+<Fragment
+  set:html={referenceString
+    ? interpolate(translation, referenceString)
+    : sanitizeTranslations(translation)}
+/>
